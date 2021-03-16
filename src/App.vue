@@ -1,18 +1,17 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-dark bg-primary">
-      <a href="/" class="navbar-brand">Teacher's Forum Community</a>
+      <a href="/" class="navbar-brand">Teacher's Forum Community FORÜ</a>
     </nav>
-    <!-- main content -->
     <div class="container">
       <div class="row mt-5">
         <div class="col-sm-4">
           <div class="card">
             <div class="card-header">
-              <h3>Add a new forum</h3>
+              <h3>Crea un nuevo foro</h3>
             </div>
             <div class="card-body">
-              <form>
+              <form @submit.prevent="addForums">
                 <div class="form-group">
                   <label>
                     <input type="text" class="font-control" v-model="newForum.name" placeholder="Name">
@@ -37,7 +36,7 @@
           <img src="./assets/logo.png" alt="">
           <div class="card">
             <div class="card-header">
-              <h3>Forums Lists</h3>
+              <h3>Lista de Foros</h3>
             </div>
             <div class="card-body">
               <table class="table table-striped table-bordered">
@@ -69,15 +68,15 @@ import config from './config';
 //app contiene conexion de firebase
 let app = Firebase.initializeApp(config);
 
-//db contiene conexion a la para usar el servicio
+//db contiene conexion para usar el servicio
 let db = app.database();
-let newForumRef = db.ref('websites');
+let forumsRef = db.ref('forums');
 //let authentication = app.auth();
 
 export default {
   name: 'App',
   firebase: {
-    forums: newForumRef,
+    forums: forumsRef,
   },
   data(){
     return {
@@ -89,6 +88,16 @@ export default {
     }
 
   },
+  methods:{
+    addForums(){
+      //console.log(this.newForum);
+      forumsRef.push(this.newForum);
+      this.newForum.name='';
+      this.newForum.author='';
+      this.newForum.url='';
+
+    }
+  }
 
 }
 </script>
